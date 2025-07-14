@@ -1,3 +1,54 @@
+:root {
+  --title-font: "Impact", sans-serif;
+  --text-font: "Calibri", sans-serif;
+  --primary-colour: rgb(220, 220, 220);
+  --secondary-colour: white;
+  --title-colour: black;
+  --text-colour: rgb(33, 37, 41);
+  color: ;
+}
+
+body {
+  background-color: var(--primary-colour);
+  padding-bottom: 60px;
+}
+
 #root {
-  color: red;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+section {
+  background-color: var(--secondary-colour);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers all child elements horizontally */
+}
+
+h3 {
+  font-family: var(--title-font);
+  color: var(--title-colour);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+p {
+  font-family: var(--text-font);
+  color: var(--text-colour);
+  margin-top: 10px;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--secondary-colour);
+  padding: 10px;
+  text-align: center;
+  z-index: 1000;
 }
