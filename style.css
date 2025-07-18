@@ -52,3 +52,16 @@ footer {
   text-align: center;
   z-index: 1000;
 }
+ .controls {
+    margin-bottom: 20px;
+  }
+  #controls input, #controls select {
+    padding: 8px;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  #episodeCount {
+    display: inline-block;
+    font-weight: bold;
+    margin-left: 10px;
+  }

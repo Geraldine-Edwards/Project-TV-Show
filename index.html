@@ -9,12 +9,22 @@
   </head>
 
   <body>
-    <div id="root"></div>
+      <header class="controls">
+          <div id="controls">
+            <select id="episodeSelect">
+              <option value="all">All Episodes</option>
+            </select>
+            <input type="search" id="searchInput"placeholder="Search episodes by name..."/>
+            <p id="episodeCount"></p>
+          </div>
+       </header>
 
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
+      <div id="root"></div>
 
-    <!-- Loads YOUR javascript code -->
-    <script src="script.js" defer></script>
+      <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+      <script src="episodes.js"></script>
+
+      <!-- Loads YOUR JavaScript code -->
+      <script src="script.js" defer></script>
   </body>
 </html>
