@@ -1,41 +1,80 @@
-//You can edit ALL of the code here
+let allEpisodes = [];
+
 function setup() {
-  const allEpisodes = getAllEpisodes();
+  allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
+  populateDropdown(allEpisodes);
+  setupDropdown(allEpisodes);
+  setupSearch(allEpisodes);
 }
 
 function makePageForEpisodes(episodeList) {
-  // access the element with ID of "root" in the HTML
   const rootElem = document.getElementById("root");
+  rootElem.innerHTML = "";
 
-  // create a card for each episode
+  const countElem = document.getElementById("episodeCount");
+  countElem.textContent = `Displaying ${episodeList.length} / ${allEpisodes.length} episodes`;
+
   function episodeCard({ name, season, number, image, summary }) {
-    //create a section element as the card container
     const card = document.createElement("section");
     card.innerHTML = `
-      <h3 class="episode-name">${name} - ${String(season).padStart(
-      2,
-      "0"
-    )}E${String(number).padStart(2, "0")}</h3>
+      <h3 class="episode-name">${name} - S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}</h3>
       <img class="episode-image" src="${image.medium}" alt="${name}">
       <p class="episode-summary">${summary}</p>
     `;
     return card;
   }
 
-  // iterate through the array of episode objects using the map method
-  const episodeCards = episodeList.map((episode) => {
-    return episodeCard(episode);
-  });
+  const episodeCards = episodeList.map(episodeCard);
+  rootElem.append(...episodeCards);
 
-  rootElem.append(...episodeCards); // append all episode cards to the root element
-
-  // Add attribution footer
   const footer = document.createElement("footer");
   footer.innerHTML = `
-      <p>Episode data provided by <a href="https://www.tvmaze.com" target="_blank">TVMaze.com</a></p>
-    `;
+    <p>Episode data provided by <a href="https://www.tvmaze.com" target="_blank">TVMaze.com</a></p>
+  `;
   rootElem.appendChild(footer);
+}
+
+function populateDropdown(episodes) {
+  const select = document.getElementById("episodeSelect");
+  episodes.forEach((ep) => {
+    const option = document.createElement("option");
+    const code = `S${zeroPad(ep.season)}E${zeroPad(ep.number)}`;
+    option.value = ep.id;
+    option.textContent = `${code} - ${ep.name}`;
+    select.appendChild(option);
+  });
+}
+
+function setupDropdown(episodes) {
+  const select = document.getElementById("episodeSelect");
+  select.addEventListener("change", () => {
+    const value = select.value;
+    if (value === "all") {
+      makePageForEpisodes(allEpisodes);
+    } else {
+      const selected = episodes.find((ep) => ep.id === Number(value));
+      makePageForEpisodes([selected]);
+    }
+  });
+}
+
+function setupSearch(episodes) {
+  const input = document.getElementById("searchInput");
+  input.addEventListener("input", () => {
+    const query = input.value.toLowerCase();
+    const filtered = episodes.filter((ep) => {
+      return (
+        ep.name.toLowerCase().includes(query) ||
+        ep.summary.toLowerCase().includes(query)
+      );
+    });
+    makePageForEpisodes(filtered);
+  });
+}
+
+function zeroPad(num) {
+  return String(num).padStart(2, "0");
 }
 
 window.onload = setup;
