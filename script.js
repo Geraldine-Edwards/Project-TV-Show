@@ -1,11 +1,28 @@
 let allEpisodes = [];
 
-function setup() {
-  allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
-  populateDropdown(allEpisodes);
-  setupDropdown(allEpisodes);
-  setupSearch(allEpisodes);
+async function setup() {
+  // access the root element and display loading message
+  const rootElem = document.getElementById("root");
+  rootElem.innerHTML = `Loading episodes...`;
+
+  // use promise to fetch episodes from the TVMaze API
+  // and handle errors gracefully
+  try {
+    // fetch episodes from the TVMaze API
+    const response = await fetch("https://api.tvmaze.com/shows/82/episodes");
+    // check if the response is ok
+    const episodes = await response.json();
+    // check if the response contains episodes
+    allEpisodes = episodes;
+    // call the remaining functions to set up the page
+    makePageForEpisodes(allEpisodes);
+    populateDropdown(allEpisodes);
+    setupDropdown(allEpisodes);
+    setupSearch(allEpisodes);
+  } catch (error) {
+    // handle any errors that occur during the fetch
+    rootElem.innerHTML = `Sorry, we couldn't load the episodes. Please try again later.`;
+  }
 }
 
 function makePageForEpisodes(episodeList) {
