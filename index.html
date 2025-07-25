@@ -16,7 +16,9 @@
           <option value="">Loading shows...</option>
         </select>
 
-        <label for="episodeSelect" class="visually-hidden">Select episode</label>
+        <label for="episodeSelect" class="visually-hidden"
+          >Select episode</label
+        >
         <select id="episodeSelect">
           <option value="all">All Episodes</option>
         </select>
@@ -27,12 +29,23 @@
           id="searchInput"
           placeholder="Search episodes by keyword..."
         />
-        <p id="episodeCount"></p>
+        <span id="episodeCount"></span>
       </div>
-
+      <div id="navigation"></div>
     </header>
 
     <main id="root"></main>
+    <footer id="mainFooter">
+      <p>
+        Episode data provided by
+        <a
+          href="https://www.tvmaze.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          >TVMaze.com</a
+        >
+      </p>
+    </footer>
 
     <!-- Loads YOUR JavaScript code -->
     <script src="script.js" defer></script>

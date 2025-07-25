@@ -67,14 +67,21 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: var(--secondary-colour);
+  background-color: var(--accent-colour);
   padding: 10px;
   text-align: center;
   z-index: 1000;
 }
+
+footer p {
+  margin: 0;
+  font-family: var(--text-font);
+  color: var(--primary-colour);
+}
 .controls {
   margin-bottom: 20px;
 }
+
 #controls input,
 #controls select {
   padding: 8px;
@@ -86,8 +93,31 @@ footer {
   width: 260px;
 }
 #episodeCount {
+  font-family: var(--text-font);
   display: inline-block;
   font-weight: bold;
   margin-left: 10px;
   color: var(--secondary-colour);
+}
+#navigation {
+  margin: 1em 0;
+  text-align: center;
+}
+
+/* Style the Back to Shows button */
+#backToShowsBtn {
+  background: #ffd700;
+  color: #222;
+  font-family: var(--text-font);
+  border: none;
+  padding: 0.6em 1.2em;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: background 0.2s;
+}
+
+#backToShowsBtn:hover {
+  background: #ffec80;
 }
