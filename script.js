@@ -94,7 +94,7 @@ function setupEpisodeDropdown(episodes) {
   const select = document.getElementById("episodeSelect");
   select.addEventListener("change", () => {
     const value = select.value;
-    const countElem = document.getElementById("episodeCount");
+    const countElem = document.getElementById("displayCount");
     if (value === "all") {
       renderCards(episodes, "episode");
       updateDisplayCount(episodes.length, episodes.length, "episode");
@@ -107,7 +107,7 @@ function setupEpisodeDropdown(episodes) {
 
 // helper function to update the episode count display
 function updateDisplayCount(displayed, total, type) {
-  const countElem = document.getElementById("episodeCount");
+  const countElem = document.getElementById("displayCount");
   const showOrEpisodeType = type === "show" ? "shows" : "episodes";
   countElem.textContent = `Displaying ${displayed} / ${total} ${showOrEpisodeType}`;
 }
@@ -160,7 +160,7 @@ function showBackToShows() {
     nav.innerHTML = "";
     document.getElementById("showSelect").style.display = "";
     document.getElementById("episodeSelect").style.display = "none";
-    document.getElementById("episodeCount").textContent = "";
+    document.getElementById("displayCount").textContent = "";
     renderCards(allShows, "show");
     populateShowDropdown(allShows);
     setupSearch(allShows, "show");
@@ -207,7 +207,7 @@ async function setup() {
 
   // hide episode controls initially
   document.getElementById("episodeSelect").style.display = "none";
-  document.getElementById("episodeCount").textContent = "";
+  document.getElementById("displayCount").textContent = "";
   document.getElementById("navigation").innerHTML = "";
 
   populateShowDropdown(allShows);
