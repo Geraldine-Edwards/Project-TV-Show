@@ -25,14 +25,14 @@ function createShowCard(show) {
   const card = document.createElement("section");
   card.className = "show-card";
   card.innerHTML = `
-     <h3 class="show-title" style="cursor:pointer">${show.name}</h3>
-    <img src="${show.image?.medium || ""}" alt="${show.name}">
-    <p>${show.summary}</p>
-    <p><strong>Genres:</strong> ${show.genres.join(", ")}</p>
-    <p><strong>Status:</strong> ${show.status}</p>
-    <p><strong>Rating:</strong> ${show.rating?.average || "N/A"}</p>
-    <p><strong>Runtime:</strong> ${show.runtime} min</p>
-  `;
+     <h3 class="show-title">${show.name}</h3>
+  <img class="show-image" src="${show.image?.medium || ""}" alt="${show.name}">
+  <p class="show-genres"><strong>Genres:</strong> ${show.genres.join(", ")}</p>
+  <p class="show-status"><strong>Status:</strong> ${show.status}</p>
+  <p class="show-rating"><strong>Rating:</strong> ${show.rating?.average || "N/A"}</p>
+  <p class="show-runtime"><strong>Runtime:</strong> ${show.runtime} min</p>
+  <p class="show-summary">${show.summary}</p>
+`;
   //  click to view the episodes of the show
   card
     .querySelector(".show-title")
@@ -45,9 +45,9 @@ function createEpisodeCard(ep) {
   const card = document.createElement("section");
   card.className = "episode-card";
   card.innerHTML = `
-    <h3>${ep.name} - S${zeroPad(ep.season)}E${zeroPad(ep.number)}</h3>
-    <img src="${ep.image?.medium || ""}" alt="${ep.name}">
-    <p>${ep.summary}</p>
+    <h3 lass="episode-title">${ep.name} - S${zeroPad(ep.season)}E${zeroPad(ep.number)}</h3>
+    <img class="episode-image" src="${ep.image?.medium || ""}" alt="${ep.name}">
+    <p class="episode-summary">${ep.summary}</p>
   `;
   return card;
 }
@@ -97,7 +97,7 @@ function setupEpisodeDropdown(episodes) {
     const countElem = document.getElementById("episodeCount");
     if (value === "all") {
       renderCards(episodes, "episode");
-      updateEpisodeCount(episodes.length, episodes.length);
+      updateDisplayCount(episodes.length, episodes.length, "episode");
     } else {
       const selected = episodes.find((ep) => ep.id === Number(value));
       renderCards([selected], "episode");
@@ -106,9 +106,10 @@ function setupEpisodeDropdown(episodes) {
 }
 
 // helper function to update the episode count display
-function updateEpisodeCount(displayed, total) {
+function updateDisplayCount(displayed, total, type) {
   const countElem = document.getElementById("episodeCount");
-  countElem.textContent = `Displaying ${displayed} / ${total} episodes`;
+  const showOrEpisodeType = type === "show" ? "shows" : "episodes";
+  countElem.textContent = `Displaying ${displayed} / ${total} ${showOrEpisodeType}`;
 }
 
 // helper function to display message when no matches are found
@@ -129,8 +130,10 @@ function setupSearch(data, type) {
       filtered = data.filter((show) => show.name.toLowerCase().includes(query));
       if (filtered.length === 0) {
         showNoMatches("show");
+        updateDisplayCount(0, data.length, "show");
       } else {
         renderCards(filtered, "show");
+        updateDisplayCount(filtered.length, data.length, "show");
       }
     } else {
       filtered = data.filter(
@@ -140,10 +143,10 @@ function setupSearch(data, type) {
       );
       if (filtered.length === 0) {
         showNoMatches("episode");
-        updateEpisodeCount(0, data.length);
+        updateDisplayCount(0, data.length, "episode");
       } else {
         renderCards(filtered, "episode");
-        updateEpisodeCount(filtered.length, data.length);
+        updateDisplayCount(filtered.length, data.length, "episode");
       }
     }
   });
@@ -161,6 +164,7 @@ function showBackToShows() {
     renderCards(allShows, "show");
     populateShowDropdown(allShows);
     setupSearch(allShows, "show");
+    updateDisplayCount(filtered.length, data.length, "show");
   };
 }
 
@@ -184,7 +188,7 @@ async function handleShowSelect(showId) {
   populateEpisodeDropdown(allEpisodes);
   setupEpisodeDropdown(allEpisodes);
   setupSearch(allEpisodes, "episode");
-  updateEpisodeCount(allEpisodes.length, allEpisodes.length);
+  updateDisplayCount(allEpisodes.length, allEpisodes.length, "episode");
 }
 
 // main setup function to initialize the page when it loads
@@ -216,6 +220,7 @@ async function setup() {
   });
   renderCards(allShows, "show");
   setupSearch(allShows, "show");
+  updateDisplayCount(allShows.length, allShows.length, "show");
 }
 
 window.onload = setup;
