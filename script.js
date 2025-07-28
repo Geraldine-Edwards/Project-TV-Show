@@ -127,7 +127,12 @@ function setupSearch(data, type) {
     const query = input.value.toLowerCase();
     let filtered;
     if (type === "show") {
-      filtered = data.filter((show) => show.name.toLowerCase().includes(query));
+      filtered = data.filter(
+        (show) =>
+          show.name.toLowerCase().includes(query) ||
+          show.genres.join(" ").toLowerCase().includes(query) ||
+          (show.summary && show.summary.toLowerCase().includes(query))
+      );
       if (filtered.length === 0) {
         showNoMatches("show");
         updateDisplayCount(0, data.length, "show");
