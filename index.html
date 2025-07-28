@@ -9,30 +9,47 @@
   </head>
 
   <body>
-    <header class="controls">
-      <div id="controls">
-        <label for="showSelect" class="visually-hidden">Select show</label>
-        <select id="showSelect">
-          <option value="">Loading shows...</option>
-        </select>
+    <header>
+      <nav class="controls-bar" aria-label="Main navigation">
+        <div id="controls">
+          <label for="showSelect" class="visually-hidden">Select show</label>
+          <select id="showSelect">
+            <option value="">Loading shows...</option>
+          </select>
 
-        <label for="episodeSelect" class="visually-hidden">Select episode</label>
-        <select id="episodeSelect">
-          <option value="all">All Episodes</option>
-        </select>
+          <label for="episodeSelect" class="visually-hidden"
+            >Select episode</label
+          >
+          <select id="episodeSelect">
+            <option value="all">All Episodes</option>
+          </select>
 
-        <label for="searchInput" class="visually-hidden">Search Episodes</label>
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="Search episodes by keyword..."
-        />
-        <p id="episodeCount"></p>
-      </div>
-
+          <label for="searchInput" class="visually-hidden"
+            >Search Episodes</label
+          >
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Search shows/episodes..."
+          />
+          <span id="displayCount"></span>
+        </div>
+        <div id="navigation"></div>
+      </nav>
     </header>
 
     <main id="root"></main>
+    <footer id="mainFooter">
+      <p>
+        Episode data provided by
+        <a
+          href="https://www.tvmaze.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          >TVMaze.com</a
+        >
+      </p>
+    </footer>
 
     <!-- Loads YOUR JavaScript code -->
     <script src="script.js" defer></script>
