@@ -2,8 +2,10 @@
 const showsCache = {};
 const episodesCache = {};
 
+// set up the initial variable states when page loads
 let allShows = [];
 let allEpisodes = [];
+let currentShowName = "";
 
 // helper function to clear the content of a given element
 function clearElement(element) {
@@ -33,21 +35,40 @@ function createShowCard(show) {
   <p class="show-runtime"><strong>Runtime:</strong> ${show.runtime} min</p>
   <p class="show-summary">${show.summary}</p>
 `;
-  //  click to view the episodes of the show
-  card
-    .querySelector(".show-title")
-    .addEventListener("click", () => handleShowSelect(show.id));
+  //  click the show card to view the episodes of the show
+  card.addEventListener("click", () => handleShowSelect(show.id));
   return card;
 }
 
-// helper function to create the episode card
-function createEpisodeCard(ep) {
+// For the episode list (grid)
+function createEpisodesCards(ep) {
   const card = document.createElement("section");
   card.className = "episode-card";
   card.innerHTML = `
-    <h3 lass="episode-title">${ep.name} - S${zeroPad(ep.season)}E${zeroPad(ep.number)}</h3>
     <img class="episode-image" src="${ep.image?.medium || ""}" alt="${ep.name}">
+    <h3 class="episode-title">${ep.name} - S${zeroPad(ep.season)}E${zeroPad(ep.number)}</h3>
     <p class="episode-summary">${ep.summary}</p>
+  `;
+  card.addEventListener("click", () => {
+    renderCards([ep], "single-episode");
+    updateDisplayCount(1, allEpisodes.length, "episode");
+    showBackToShows();
+  });
+  return card;
+}
+
+// For the single episode view (side-by-side)
+function createSingleEpisodeCard(ep) {
+  const card = document.createElement("section");
+  card.className = "episode-card single-episode-card";
+  card.innerHTML = `
+    <div class="episode-card-flex">
+      <img class="episode-image" src="${ep.image?.medium || ""}" alt="${ep.name}">
+      <div class="episode-info">
+        <h3 class="episode-title">${ep.name} - S${zeroPad(ep.season)}E${zeroPad(ep.number)}</h3>
+        <p class="episode-summary">${ep.summary}</p>
+      </div>
+    </div>
   `;
   return card;
 }
@@ -56,8 +77,19 @@ function createEpisodeCard(ep) {
 function renderCards(data, type) {
   const rootElem = document.getElementById("root");
   clearElement(rootElem);
+  // if the card type is either for a show or an episode, use the appropriate template
+  let cardTemplate;
+  // for the page of "shows"
+  if (type === "show") {
+    cardTemplate = createShowCard;
+    //  for the page of episodes
+  } else if (type === "episode") {
+    cardTemplate = createEpisodesCards;
+    // for the single episode page
+  } else if (type === "single-episode") {
+    cardTemplate = createSingleEpisodeCard;
+  }
 
-  const cardTemplate = type === "show" ? createShowCard : createEpisodeCard;
   const cards = data.map(cardTemplate);
   rootElem.append(...cards);
 }
@@ -100,7 +132,9 @@ function setupEpisodeDropdown(episodes) {
       updateDisplayCount(episodes.length, episodes.length, "episode");
     } else {
       const selected = episodes.find((ep) => ep.id === Number(value));
-      renderCards([selected], "episode");
+      renderCards([selected], "single-episode");
+      updateDisplayCount(1, episodes.length, "episode");
+      showBackToShows();
     }
   });
 }
@@ -166,10 +200,22 @@ function showBackToShows() {
     document.getElementById("showSelect").style.display = "";
     document.getElementById("episodeSelect").style.display = "none";
     document.getElementById("displayCount").textContent = "";
+    document.getElementById("showTitle").textContent = "";
     renderCards(allShows, "show");
     populateShowDropdown(allShows);
     setupSearch(allShows, "show");
-    updateDisplayCount(filtered.length, data.length, "show");
+    updateDisplayCount(allShows.length, allShows.length, "show");
+  };
+}
+
+// add "Back to All Episodes" link when viewing a single episode
+function showBackToEpisodes() {
+  const nav = document.getElementById("navigation");
+  nav.innerHTML = `<button id="backToEpisodesBtn">Back to All Episodes</button>`;
+  document.getElementById("backToEpisodesBtn").onclick = () => {
+    nav.innerHTML = "";
+    renderCards(allEpisodes, "episode");
+    updateDisplayCount(allEpisodes.length, allEpisodes.length, "episode");
   };
 }
 
@@ -188,12 +234,15 @@ async function handleShowSelect(showId) {
     episodesCache[showId] = await response.json();
   }
   allEpisodes = episodesCache[showId];
+  // get the show name for the display
+  currentShowName = allShows.find((show) => show.id === Number(showId)).name;
 
   renderCards(allEpisodes, "episode");
   populateEpisodeDropdown(allEpisodes);
   setupEpisodeDropdown(allEpisodes);
   setupSearch(allEpisodes, "episode");
   updateDisplayCount(allEpisodes.length, allEpisodes.length, "episode");
+  document.getElementById("showTitle").textContent = currentShowName;
 }
 
 // main setup function to initialize the page when it loads
