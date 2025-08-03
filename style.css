@@ -233,6 +233,8 @@ section.episode-card > .episode-image {
 
 /* single episode view: side-by-side layout */
 section.single-episode-card {
+  margin: 64px auto;
+  max-width: 900px;
   min-height: 340px;
   display: flex;
   flex-direction: column;
