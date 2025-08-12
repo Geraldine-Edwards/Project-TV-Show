@@ -142,7 +142,7 @@ function createEpisodesCards(ep) {
     renderCards([ep], "single-episode");
     // update the count display and pass in "1" (the current episode), number of eps and the type "episode"
     updateDisplayCount(1, allEpisodes.length, "episode");
-    // show the "Back to Shows" button
+    // show the "Back to Shows" button to allow the user to go back to shows if they want
     showBackToShows();
   });
   return card;
