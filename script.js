@@ -22,11 +22,23 @@ function createEpisodeLabel(ep) {
   return `${ep.name} (S${zeroPad(ep.season)}E${zeroPad(ep.number)})`;
 }
 
+// helper function to sanitize HTML content to prevent XSS attacks
+function stripHTML(html) {
+  // if the html is empty, return an empty string to prevent errors
+  if (!html) return "";
+  // create a temporary div to use the browser's HTML parser
+  const div = document.createElement("div");
+  // set the text content of the div to the HTML string
+  div.textContent = html;
+  // return the innerHTML of the div, which will be safe
+  return div.innerHTML;
+}
+
 // helper function to create the show card
 function createShowCard(show) {
   const card = document.createElement("section");
   card.className = "show-card";
-  card.textContent = `
+  card.innerHTML = `
      <h3 class="show-title">${show.name}</h3>
   <img class="show-image" src="${show.image?.medium || ""}" alt="${show.name}">
   <p class="show-genres"><strong>Genres:</strong> ${show.genres.join(", ")}</p>
@@ -44,7 +56,7 @@ function createShowCard(show) {
 function createEpisodesCards(ep) {
   const card = document.createElement("section");
   card.className = "episode-card";
-  card.textContent = `
+  card.innerHTML = `
     <img class="episode-image" src="${ep.image?.medium || ""}" alt="${ep.name}">
     <h3 class="episode-title">${ep.name} - S${zeroPad(ep.season)}E${zeroPad(ep.number)}</h3>
     <p class="episode-summary">${ep.summary}</p>
@@ -61,7 +73,7 @@ function createEpisodesCards(ep) {
 function createSingleEpisodeCard(ep) {
   const card = document.createElement("section");
   card.className = "episode-card single-episode-card";
-  card.textContent = `
+  card.innerHTML = `
     <div class="episode-card-flex">
       <img class="episode-image" src="${ep.image?.medium || ""}" alt="${ep.name}">
       <div class="episode-info">
