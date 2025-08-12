@@ -94,10 +94,11 @@ nav.controls-bar {
 
 /* show title styles */
 #showTitle {
-  font-size: 1.2rem;
+  font-size: 1.7rem;
   font-weight: 600;
   color: var(--primary);
-  margin: 8px 0 16px 10px;
+  margin: 16px 0;
+  text-align: center;
 }
 
 /* navigation */
