@@ -26,7 +26,7 @@ function createEpisodeLabel(ep) {
 function createShowCard(show) {
   const card = document.createElement("section");
   card.className = "show-card";
-  card.innerHTML = `
+  card.textContent = `
      <h3 class="show-title">${show.name}</h3>
   <img class="show-image" src="${show.image?.medium || ""}" alt="${show.name}">
   <p class="show-genres"><strong>Genres:</strong> ${show.genres.join(", ")}</p>
@@ -44,7 +44,7 @@ function createShowCard(show) {
 function createEpisodesCards(ep) {
   const card = document.createElement("section");
   card.className = "episode-card";
-  card.innerHTML = `
+  card.textContent = `
     <img class="episode-image" src="${ep.image?.medium || ""}" alt="${ep.name}">
     <h3 class="episode-title">${ep.name} - S${zeroPad(ep.season)}E${zeroPad(ep.number)}</h3>
     <p class="episode-summary">${ep.summary}</p>
@@ -61,7 +61,7 @@ function createEpisodesCards(ep) {
 function createSingleEpisodeCard(ep) {
   const card = document.createElement("section");
   card.className = "episode-card single-episode-card";
-  card.innerHTML = `
+  card.textContent = `
     <div class="episode-card-flex">
       <img class="episode-image" src="${ep.image?.medium || ""}" alt="${ep.name}">
       <div class="episode-info">
